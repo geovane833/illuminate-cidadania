@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>illuminate Cidadania - Home</title>
+    <!-- Adicione o link para o Bootstrap (você pode baixá-lo ou usar um CDN) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Adicione estilos CSS adicionais conforme necessário */
+        #logo {
+            font-family: 'Arial', sans-serif;
+            font-size: 2rem;
+            color: #007bff;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <span id="logo">illuminate Cidadania</span>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-md-4">
+                <a href="cadastrarReclamacao.html" class="btn btn-primary btn-lg btn-block">Cadastrar Reclamação</a>
+            </div>
+            <div class="col-md-4">
+                <a href="historicoReclamacoes.html" class="btn btn-info btn-lg btn-block">Histórico de Reclamações</a>
+            </div>
+            <div class="col-md-4">
+                <a href="perfilUsuario.html" class="btn btn-success btn-lg btn-block">Perfil do Usuário</a>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <a href="sobre.html" class="btn btn-secondary btn-lg btn-block">Sobre</a>
+            </div>
+            <div class="col-md-6">
+                <button onclick="deslogar()" class="btn btn-danger btn-lg btn-block">Deslogar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "SuaChaveAPI",
+            authDomain: "projetosocial-355cb.firebaseapp.com",
+            projectId: "projetosocial-355cb",
+            storageBucket: "projetosocial-355cb.appspot.com",
+            messagingSenderId: "583128867665",
+            appId: "1:583128867665:web:03a745b1b091fc93a3a970",
+            measurementId: "G-R0QHFMMVT1"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+
+        function deslogar() {
+            firebase.auth().signOut().then(() => {
+                alert("Você foi deslogado com sucesso!");
+                window.location = 'index.html'; // Redirecionar para a página de login
+            }).catch((error) => {
+                alert("Erro ao tentar deslogar: " + error.message);
+            });
+        }
+    </script>
+
+    <!-- Adicione o script do Bootstrap (você pode baixá-lo ou usar um CDN) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
