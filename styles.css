@@ -1,0 +1,111 @@
+@import url('https://pro.fontawesome.com/releases/v6.0.0-beta1/css/all.css');
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #e5e9f4;
+}
+
+.nav-container {
+  background-color: #ffffff;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between; /* Distribui os itens para as extremidades */
+  align-items: center; /* Centraliza os elementos verticalmente */
+}
+
+.nav-logo img {
+  width: 100px; /* Defina a largura da imagem conforme necessário */
+  height: auto; /* Altura automática para manter a proporção */
+  border-radius: 10px; /* Bordas arredondadas */
+}
+
+.nav-name {
+  font-size: 1.5rem;
+  margin-left: 1rem; /* Adiciona um espaço entre a imagem e o texto */
+  line-height: 50px; /* Ajusta a altura da linha para a mesma altura da imagem */
+}
+
+.nav-name strong {
+  font-weight: bold; /* Deixa o texto em negrito */
+}
+
+
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.menu_botoes {
+  width: 6rem;
+  height: 6rem;
+  border: 0.5rem solid transparent;
+  border-radius: 1rem;
+  color: hsl(0 0% 10%);
+  background: none;
+  display: grid;
+  place-content: center;
+  gap: 0.5rem;
+  --shadow: 
+    -.5rem -.5rem 1rem hsl(0 0% 100% / .75),
+    .5rem .5rem 1rem hsl(0 0% 50% / .5);
+  box-shadow: var(--shadow);
+  outline: none;
+  transition: all 0.1s;
+}
+
+.menu_botoes:hover,
+.menu_botoes:focus-visible {
+  color: hsl(10 80% 50%);
+  transform: scale(1.1);
+}
+
+.menu_botoes:active,
+.menu_botoes.active {
+  box-shadow:
+    var(--shadow),
+    inset .5rem .5rem 1rem hsl(0 0% 50% / .5),
+    inset -.5rem -.5rem 1rem hsl(0 0% 100% / .75);
+  color: hsl(10 80% 50%);
+}
+
+.menu_botoes > i {
+  font-size: 1.5rem;
+}
+
+.menu_botoes > span {
+  font-size: 0.75rem;
+}
+
+article.content {
+  padding: 2rem;
+}
+
+footer {
+  background-color: #ffffff;
+  padding: 1rem;
+  text-align: center;
+}
+
+/* Mídia Query para telas menores, como celulares */
+@media (max-width: 768px) {
+  .nav-container {
+    flex-direction: column; /* Organiza os elementos em coluna */
+    align-items: center; /* Centraliza os itens horizontalmente */
+    text-align: center; /* Centraliza o texto */
+  }
+
+  .nav-logo {
+    order: -1; /* Altera a ordem da logo para aparecer antes do nome */
+    margin-bottom: 1rem; /* Adiciona margem inferior para separar a imagem dos botões */
+  }
+
+  .nav-name {
+    margin-top: 0.5rem; /* Ajusta a margem para posicionar o nome no meio da imagem */
+  }
+}
+

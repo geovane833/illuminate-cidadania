@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reclamações</title>
+        <link rel="stylesheet" type="text/css" href="../styles.css">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+
+
+</head>
+<body>
+
+    <nav class="nav-container">
+      <div class="nav-logo">
+        <img src="../imagens/IFCE.png" alt="Logo IFCE">
+        <span class="nav-name"><strong>Illuminate Cidadania</strong></span>
+      </div>
+      <div class="buttons">
+        <button class="menu_botoes" onclick="window.location.href = '../index.html';">
+          <i class="fa-light fa-fire"></i>
+          <span>Home</span>
+        </button>
+        <button class="menu_botoes" onclick="window.location.href = 'Cadastrar_reclamacao.html';">
+        <i class="fa-light fa-dna"></i>
+        <span>Criar Reclamação</span>
+        </button>
+        <button class="menu_botoes active" onclick="window.location.href = 'Reclamacoes.html';">
+          <i class="fa-light fa-chart-mixed"></i>
+          <span>Reclamações</span>
+        </button>
+        <button class="menu_botoes" onclick="window.location.href = 'Problemas_resolvidos.html';">
+          <i class="fa-light fa-atom"></i>
+          <span>Resolvidos</span>
+        </button>
+        <button class="menu_botoes" onclick="window.location.href = 'Sobre.html';">
+          <i class="fa-light fa-seedling"></i>
+          <span>Sobre</span>
+        </button>
+        <button class="menu_botoes" onclick="window.location.href = 'Usuario.html';">
+          <i class="fa-light fa-disease"></i>
+          <span>Usuario</span>
+        </button>
+      </div>
+    </nav>
+    
+    <h1>Dados Salvos</h1>
+    <ul id="lista-dados"></ul> <!-- Movido abaixo do título -->
+
+    <div class="dialog-overlay" id="dialogOverlay">
+        <div class="dialog-box">
+            <div class="dialog-image" id="dialogImage"></div>
+            <div class="dialog-info" id="dialogInfo"></div>
+            <div class="dialog-buttons">
+                <button id="resolvidoButton">Resolvido</button>
+                <button id="voltarButton">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Illuminate Cidadania. Todos os direitos reservados.</p>
+    </footer>
+
+    <!-- Adicione a biblioteca do Firebase compatível com ES5 -->
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-firestore.js"></script>
+
+    <script>
+        // Configuração do Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyCesFOOnojr0bSbJSJZld-1nk7H3Ajzp_U",
+            authDomain: "projetosocial-355cb.firebaseapp.com",
+            projectId: "projetosocial-355cb",
+            storageBucket: "projetosocial-355cb.appspot.com",
+            messagingSenderId: "583128867665",
+            appId: "1:583128867665:web:03a745b1b091fc93a3a970",
+            measurementId: "G-R0QHFMMVT1"
+        };
+
+        // Inicialize o Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Função para mostrar a caixa de diálogo quando um item da lista é clicado
+        function showDialog(dados) {
+            const dialogOverlay = document.getElementById("dialogOverlay");
+            dialogOverlay.style.display = "flex";
+
+            // Exibir imagem com tamanho máximo de 200x300
+            const dialogImage = document.getElementById("dialogImage");
+            dialogImage.innerHTML = `<img src="${dados.imagemUrl}" alt="Imagem">`;
+
+            // Exibir informações
+            const dialogInfo = document.getElementById("dialogInfo");
+            dialogInfo.innerHTML = `
+                <p>Reclamação: <strong>${dados.id}</strong></p>
+                <p>Bairro: <strong>${dados.bairro}</strong></p>
+                <p>Cidade: <strong>${dados.cidade}</strong></p>
+                <p>Nome da Rua: <strong>${dados.nomeRua}</strong></p>
+                <p>Ponto de Referência: <strong>${dados.pontoReferencia}</strong></p>
+                <p>Nome do Reclamante: <strong>${dados.nomeReclamante}</strong></p>
+                <p>WhatsApp: <strong>${dados.whatsapp}</strong></p>
+            `;
+        }
+
+        // Função para esconder a caixa de diálogo
+        function hideDialog() {
+            const dialogOverlay = document.getElementById("dialogOverlay");
+            dialogOverlay.style.display = "none";
+        }
+
+        // Consulta os dados da coleção "Reclamacao"
+        db.collection("Reclamacao").get().then((querySnapshot) => {
+            const listaDados = document.getElementById("lista-dados");
+
+            querySnapshot.forEach((doc) => {
+                const dados = doc.data();
+                const listItem = document.createElement("li");
+                listItem.className = "dados-item";
+                listItem.dataset.docId = doc.id; // Define o ID do documento como um atributo de dados
+
+                // Adicione a imagem
+                const imageContainer = document.createElement("div");
+                imageContainer.innerHTML = `<img src="${dados.imagemUrl}" alt="Imagem">`;
+                listItem.appendChild(imageContainer);
+
+                // Adicione as informações do documento
+                const infoContainer = document.createElement("div");
+                infoContainer.className = "dados-info";
+                infoContainer.innerHTML = `
+                    <p>Reclamação: <h3>${dados.id}</h3></p>
+                    <p>Bairro: ${dados.bairro}</p>
+                    <p>Cidade: ${dados.cidade}</p>
+                    <p>Nome da Rua: ${dados.nomeRua}</p>
+                    <p>Ponto de Referência: ${dados.pontoReferencia}</p>
+                    <p>Nome do Reclamante: ${dados.nomeReclamante}</p>
+                    <p>WhatsApp: ${dados.whatsapp}</p>
+                `;
+                listItem.appendChild(infoContainer);
+
+                // Adicione o evento de clique para mostrar a caixa de diálogo
+                listItem.addEventListener("click", () => {
+                    // Remover a classe 'selected' de todos os itens
+                    const allItems = document.querySelectorAll(".dados-item");
+                    allItems.forEach(item => {
+                        item.classList.remove("selected");
+                    });
+                    // Adicionar a classe 'selected' ao item clicado
+                    listItem.classList.add("selected");
+                    showDialog(dados);
+                });
+
+                // Adicione o item à lista
+                listaDados.appendChild(listItem);
+            });
+        }).catch((error) => {
+            console.error("Erro ao obter documentos: ", error);
+        });
+
+        // Adicione evento de clique ao botão "Resolvido"
+        document.getElementById("resolvidoButton").addEventListener("click", () => {
+            // Aqui você pode adicionar a lógica para marcar o item como resolvido no banco de dados
+            const docId = document.querySelector(".dados-item.selected").dataset.docId; // Obtém o ID do documento
+            moverDocumentoParaProblemasResolvidos(docId);
+            hideDialog();
+        });
+
+        // Função para mover o documento para a coleção "Problemas_resolvidos" e excluí-lo da coleção original
+        function moverDocumentoParaProblemasResolvidos(docId) {
+            const origemRef = db.collection("Reclamacao").doc(docId);
+            origemRef.get().then((document) => {
+                if (document.exists) {
+                    const dados = document.data();
+                    db.collection("Problemas_resolvidos").doc(docId).set(dados)
+                        .then(() => {
+                            origemRef.delete()
+                                .then(() => {
+                                    alert("Reclamação resolvida.");
+                                    location.reload(); // Recarregar a página após a ação
+                                })
+                                .catch((error) => {
+                                    alert("Erro ao excluir reclamação original: " + error.message);
+                                });
+                        })
+                        .catch((error) => {
+                            alert("Erro ao mover reclamação: " + error.message);
+                        });
+                } else {
+                    alert("Reclamação com ID " + docId + " não encontrada.");
+                }
+            }).catch((error) => {
+                alert("Erro ao acessar a reclamação: " + error.message);
+            });
+        }
+
+        // Adicione evento de clique ao botão "Voltar"
+        document.getElementById("voltarButton").addEventListener("click", () => {
+            // Aqui você pode adicionar a lógica para cancelar a operação ou realizar outras ações necessárias
+            hideDialog();
+        });
+    </script>
+</body>
+</html>
