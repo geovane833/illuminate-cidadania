@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuário - Illuminate Cidadania</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+    <nav class="nav-container">
+      <div class="nav-logo">
+        <img src="../imagens/IFCE.png" alt="Logo IFCE">
+        <span class="nav-name"><strong>Illuminate Cidadania</strong></span>
+      </div>
+      <div class="buttons">
+        <button class="menu_botoes active" onclick="window.location.href = '../index.html';">
+          <i class="fa-light fa-fire"></i>
+          <span>Home</span>
+        </button>
+        <button class="menu_botoes" onclick="window.location.href = 'Cadastrar_reclamacao.html';">
+        <i class="fa-light fa-dna"></i>
+        <span>Criar Reclamação</span>
+        </button>
+        <button class="menu_botoes" onclick="window.location.href = 'Reclamacoes.html';">
+          <i class="fa-light fa-chart-mixed"></i>
+          <span>Reclamações</span>
+        </button>
+        <button class="menu_botoes" onclick="window.location.href = 'Problemas_resolvidos.html';">
+          <i class="fa-light fa-atom"></i>
+          <span>Resolvidos</span>
+        </button>
+        <button class="menu_botoes" onclick="window.location.href = 'Sobre.html';">
+          <i class="fa-light fa-seedling"></i>
+          <span>Sobre</span>
+        </button>
+        <button class="menu_botoes" onclick="window.location.href = 'Usuario.html';">
+          <i class="fa-light fa-disease"></i>
+          <span>Usuario</span>
+        </button>
+      </div>
+    </nav>
+
+    <article class="content">
+        <h1>Perfil do Usuário</h1>
+        <p>Nome: <strong>Nome do Usuário</strong></p>
+        <p>Email: <strong>usuario@example.com</strong></p>
+        <button onclick="logout()">Logout</button>
+    </article>
+
+    <footer>
+        <p>&copy; 2024 Illuminate Cidadania. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function logout() {
+            // Adicione aqui o código para realizar o logout do usuário
+            alert("Usuário deslogado com sucesso!");
+        }
+    </script>
+
+</body>
+</html>
