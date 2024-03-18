@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - Illuminate Cidadania</title>
+  <link rel="stylesheet" href="./stylelogin.css">
+  <style>
+    /* Adicionando estilo ao botão Entrar */
+    #loginButton {
+      background: linear-gradient(45deg, #00ff00, #007f00);
+      color: white;
+      cursor: pointer;
+    }
+
+    /* Estilizando o link Esqueceu a senha? e Cadastra-se */
+    .links a {
+      color: #333;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<!--ring div starts here-->
+<div class="ring">
+  <i style="--clr:#00ff0a;"></i>
+  <i style="--clr:#ff0057;"></i>
+  <i style="--clr:#fffd44;"></i>
+  <div class="login">
+    <h2>Login</h2>
+    <div class="inputBx">
+      <input type="email" id="email" placeholder="Email">
+    </div>
+    <div class="inputBx">
+      <input type="password" id="password" placeholder="Senha">
+    </div>
+   <div class="inputBx">
+      <input type="submit" id="loginButton" value="Entrar">
+    </div>
+
+    <div class="links">
+      <a href="#">Esqueceu a senha?</a>
+     <a href="Cadastrese.html">Cadastra-se</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- Firebase JavaScript SDK -->
+<script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js"></script>
+
+<script>
+   // Configuração do Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyCesFOOnojr0bSbJSJZld-1nk7H3Ajzp_U",
+        authDomain: "projetosocial-355cb.firebaseapp.com",
+        projectId: "projetosocial-355cb",
+        storageBucket: "projetosocial-355cb.appspot.com",
+        messagingSenderId: "583128867665",
+        appId: "1:583128867665:web:03a745b1b091fc93a3a970",
+        measurementId: "G-R0QHFMMVT1"
+    };
+
+  // Inicialize o Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  // Pegar elementos do formulário
+  const emailInput = document.getElementById("email");
+  const passwordInput = document.getElementById("password");
+  const loginButton = document.getElementById("loginButton");
+
+  // Adicionar evento de click ao botão de login
+  loginButton.addEventListener("click", () => {
+    const email = emailInput.value;
+    const password = passwordInput.value;
+
+    // Autenticar usuário usando email/senha
+    firebase.auth().signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        // Login bem-sucedido, redirecionar para a página principal
+        window.location.href = "paginas/inicio.html";
+      })
+      .catch((error) => {
+        // Exibir erro de autenticação
+        alert("Erro ao fazer login: " + error.message);
+      });
+  });
+</script>
+
+</body>
+</html>

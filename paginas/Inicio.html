@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Illuminate Cidadania</title>
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    #clock {
+      font-size: 25px;
+      margin-bottom: 10px;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      color: white;
+    }
+
+    #calendar {
+      font-size: 20px;
+      margin-bottom: 10px;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      color: white;
+    }
+
+    #slideshow-container {
+      position: relative;
+      width: 100%;
+      max-width: 100vw; /* Defina a largura máxima como a largura da tela */
+      height: auto;
+      overflow: hidden;
+    }
+
+    #slideshow {
+      width: 100%;
+      height: auto;
+    }
+
+    .text-illuminate {
+      color: white;
+      font-size: 16px;
+      max-width: 100vw;
+      padding: 20px;
+      box-sizing: border-box;
+      position: absolute;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.7);
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav-container">
+  <div class="nav-logo">
+    <img src="../imagens/IFCE.png" alt="Logo IFCE">
+    <span class="nav-name"><strong>Illuminate Cidadania</strong></span>
+  </div>
+  <div class="buttons">
+    <button class="menu_botoes active" onclick="window.location.href = 'inicio.html';">
+      <i class="fa-light fa-fire"></i>
+      <span>Inicio</span>
+    </button>
+    <button class="menu_botoes" onclick="window.location.href = 'Cadastrar_reclamacao.html';">
+      <i class="fa-light fa-dna"></i>
+      <span>Criar Reclamação</span>
+    </button>
+    <button class="menu_botoes" onclick="window.location.href = 'Reclamacoes.html';">
+      <i class="fa-light fa-chart-mixed"></i>
+      <span>Reclamações</span>
+    </button>
+    <button class="menu_botoes" onclick="window.location.href = 'Problemas_resolvidos.html';">
+      <i class="fa-light fa-atom"></i>
+      <span>Resolvidos</span>
+    </button>
+    <button class="menu_botoes" onclick="window.location.href = 'Sobre.html';">
+      <i class="fa-light fa-seedling"></i>
+      <span>Sobre</span>
+    </button>
+    <button class="menu_botoes" onclick="window.location.href = 'Usuario.html';">
+      <i class="fa-light fa-disease"></i>
+      <span>Usuario</span>
+    </button>
+  </div>
+</nav>
+
+<div id="slideshow-container">
+  <div id="clock"></div>
+  <div id="calendar"></div>
+  <img id="slideshow" src="../imagens/imagem1.jpg" alt="Slideshow">
+  <div class="text-illuminate">
+    <h2>Sobre o Illuminate Cidadania</h2>
+    <p>O Illuminate Cidadania é um site destinado aos moradores de Jaguaruana, onde podem registrar reclamações sobre problemas de iluminação pública, como postes apagados. Nosso objetivo é proporcionar uma ferramenta eficaz para que a comunidade possa comunicar e resolver essas questões de forma rápida e eficiente.</p>
+  </div>
+</div>
+
+<footer>
+  <p>&copy; 2024 Illuminate Cidadania. Todos os direitos reservados.</p>
+</footer>
+
+<script>
+  function updateClock() {
+    var now = new Date();
+    var hours = now.getHours();
+    var minutes = now.getMinutes();
+    var seconds = now.getSeconds();
+    document.getElementById('clock').innerHTML = hours + ':' + (minutes < 10 ? '0' : '') + minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+    setTimeout(updateClock, 1000);
+  }
+
+  function updateCalendar() {
+    var now = new Date();
+    var days = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
+    var months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+    var dayOfWeek = days[now.getDay()];
+    var dayOfMonth = now.getDate();
+    var month = months[now.getMonth()];
+    var year = now.getFullYear();
+    document.getElementById('calendar').innerHTML = dayOfWeek + ', ' + dayOfMonth + ' de ' + month + ' de ' + year;
+  }
+
+  window.onload = function() {
+    updateClock();
+    updateCalendar();
+    changeImage();
+  };
+
+  var images = ['../imagens/imagem1.jpg', '../imagens/imagem2.jpg', '../imagens/imagem3.jpg', '../imagens/imagem4.jpg'];
+  var currentIndex = 0;
+
+  function changeImage() {
+    document.getElementById('slideshow').src = images[currentIndex];
+    currentIndex = (currentIndex + 1) % images.length;
+    setTimeout(changeImage, 5000); // Altera a imagem a cada 5 segundos
+  }
+
+</script>
+
+<script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js"></script>
+<script>
+   // Configuração do Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyCesFOOnojr0bSbJSJZld-1nk7H3Ajzp_U",
+        authDomain: "projetosocial-355cb.firebaseapp.com",
+        projectId: "projetosocial-355cb",
+        storageBucket: "projetosocial-355cb.appspot.com",
+        messagingSenderId: "583128867665",
+        appId: "1:583128867665:web:03a745b1b091fc93a3a970",
+        measurementId: "G-R0QHFMMVT1"
+    };
+  firebase.initializeApp(firebaseConfig);
+
+  // Função para verificar se o usuário está autenticado
+  function verificarAutenticacao() {
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        // Usuário está autenticado, permitir acesso ao conteúdo da página
+        console.log("Usuário autenticado:", user);
+      } else {
+        // Usuário não está autenticado, redirecionar para a página de login
+        console.log("Usuário não autenticado. Redirecionando para a página de login...");
+        window.location.href = "../index.html"; // Substitua "login.html" pelo caminho da sua página de login
+      }
+    });
+  }
+
+  // Chamada da função de verificação de autenticação quando a página é carregada
+  window.onload = verificarAutenticacao;
+</script>
+
+</body>
+</html>
