@@ -51,16 +51,16 @@
 <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js"></script>
 
 <script>
-   // Configuração do Firebase
-    const firebaseConfig = {
-        apiKey: "AIzaSyCesFOOnojr0bSbJSJZld-1nk7H3Ajzp_U",
-        authDomain: "projetosocial-355cb.firebaseapp.com",
-        projectId: "projetosocial-355cb",
-        storageBucket: "projetosocial-355cb.appspot.com",
-        messagingSenderId: "583128867665",
-        appId: "1:583128867665:web:03a745b1b091fc93a3a970",
-        measurementId: "G-R0QHFMMVT1"
-    };
+  // Configuração do Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyCesFOOnojr0bSbJSJZld-1nk7H3Ajzp_U",
+    authDomain: "projetosocial-355cb.firebaseapp.com",
+    projectId: "projetosocial-355cb",
+    storageBucket: "projetosocial-355cb.appspot.com",
+    messagingSenderId: "583128867665",
+    appId: "1:583128867665:web:03a745b1b091fc93a3a970",
+    measurementId: "G-R0QHFMMVT1"
+  };
 
   // Inicialize o Firebase
   firebase.initializeApp(firebaseConfig);
@@ -78,8 +78,14 @@
     // Autenticar usuário usando email/senha
     firebase.auth().signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
-        // Login bem-sucedido, redirecionar para a página principal
-        window.location.href = "paginas/inicio.html";
+        // Verificar se o email é admin
+        if (email === "admin@gmail.com") {
+          // Se for admin, redirecionar para a página do admin
+          window.location.href = "admin/index.html";
+        } else {
+          // Senão, redirecionar para a página principal
+          window.location.href = "paginas/inicio.html";
+        }
       })
       .catch((error) => {
         // Exibir erro de autenticação
@@ -87,6 +93,7 @@
       });
   });
 </script>
+
 
 </body>
 </html>

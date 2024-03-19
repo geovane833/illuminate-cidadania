@@ -107,7 +107,6 @@
             <i class="fa-light fa-disease"></i>
             <span>Usuario</span>
         </button>
-
     </div>
 </nav>
 
@@ -148,7 +147,6 @@
     <p>&copy; 2024 Illuminate Cidadania. Todos os direitos reservados.</p>
 </footer>
 
-
 <script>
     // Armazene a URL da imagem padrão
     const imagemPadraoURL = "../imagens/imagem_reclamacao.png";
@@ -173,104 +171,103 @@
     const formCriarReclamacao = document.getElementById('formCriarReclamacao');
     formCriarReclamacao.addEventListener('submit', function() {
         // Após o envio do formulário, restaure a imagem padrão
-        // restaurarImagemPadrao();
+        restaurarImagemPadrao();
     });
 </script>
 
+<script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-storage.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js"></script>
 
- <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-storage.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js"></script>
+<script>
+   // Configuração do Firebase
+   const firebaseConfig = {
+    apiKey: "AIzaSyCesFOOnojr0bSbJSJZld-1nk7H3Ajzp_U",
+    authDomain: "projetosocial-355cb.firebaseapp.com",
+    databaseURL: "https://projetosocial-355cb-default-rtdb.firebaseio.com",
+    projectId: "projetosocial-355cb",
+    storageBucket: "projetosocial-355cb.appspot.com",
+    messagingSenderId: "583128867665",
+    appId: "1:583128867665:web:03a745b1b091fc93a3a970",
+    measurementId: "G-R0QHFMMVT1"
+  };
 
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const storage = firebase.storage();
 
-    <script>
-       // Configuração do Firebase
-       const firebaseConfig = {
-            apiKey: "AIzaSyCesFOOnojr0bSbJSJZld-1nk7H3Ajzp_U",
-            authDomain: "projetosocial-355cb.firebaseapp.com",
-            projectId: "projetosocial-355cb",
-            storageBucket: "projetosocial-355cb.appspot.com",
-            messagingSenderId: "583128867665",
-            appId: "1:583128867665:web:03a745b1b091fc93a3a970",
-            measurementId: "G-R0QHFMMVT1"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const storage = firebase.storage();
-
-        // Verificar se o usuário está autenticado
+    // Verificar se o usuário está autenticado
     firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
             // Usuário está autenticado, permitir o acesso à página
             // Aqui você pode colocar o código que você quer que seja executado quando o usuário está autenticado
+            // Você pode acessar o email do usuário através de user.email e o ID através de user.uid
         } else {
             // Usuário não está autenticado, redirecionar para a página de login
             window.location.href = '../index.html'; // Substitua 'login.html' pelo caminho da sua página de login
         }
     });
 
-        formCriarReclamacao.addEventListener('submit', async (e) => {
-            e.preventDefault();
+    formCriarReclamacao.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-            const nomeRua = formCriarReclamacao['nomeRua'].value;
-            const pontoReferencia = formCriarReclamacao['pontoReferencia'].value;
-            const bairro = formCriarReclamacao['bairro'].value;
-            const cidade = formCriarReclamacao['cidade'].value;
-            const nomeReclamante = formCriarReclamacao['nomeReclamante'].value;
-            const whatsapp = formCriarReclamacao['whatsapp'].value;
+        const nomeRua = formCriarReclamacao['nomeRua'].value;
+        const pontoReferencia = formCriarReclamacao['pontoReferencia'].value;
+        const bairro = formCriarReclamacao['bairro'].value;
+        const cidade = formCriarReclamacao['cidade'].value;
+        const nomeReclamante = formCriarReclamacao['nomeReclamante'].value;
+        const whatsapp = formCriarReclamacao['whatsapp'].value;
 
-            if (nomeRua && pontoReferencia && bairro && cidade && nomeReclamante && whatsapp) {
-                const id = generateFileName(); // Gerar o ID
-                const imagem = formCriarReclamacao['imagem'].files[0];
-                
-                const reclamacao = {
-                    id: id,
-                    nomeRua: nomeRua,
-                    pontoReferencia: pontoReferencia,
-                    bairro: bairro,
-                    cidade: cidade,
-                    nomeReclamante: nomeReclamante,
-                    whatsapp: whatsapp
-                };
+        if (nomeRua && pontoReferencia && bairro && cidade && nomeReclamante && whatsapp) {
+            const id = generateFileName(); // Gerar o ID
+            const imagem = formCriarReclamacao['imagem'].files[0];
+            
+            const reclamacao = {
+                id: id,
+                nomeRua: nomeRua,
+                pontoReferencia: pontoReferencia,
+                bairro: bairro,
+                cidade: cidade,
+                nomeReclamante: nomeReclamante,
+                whatsapp: whatsapp,
+                userEmail: firebase.auth().currentUser.email, // Incluindo o email do usuário
+                userId: firebase.auth().currentUser.uid // Incluindo o ID do usuário
+            };
 
-                try {
-                    // Enviar a imagem para o Firebase Storage
-                    const storageRef = storage.ref();
-                    const imagemRef = storageRef.child(`images/${id}`);
-                    await imagemRef.put(imagem);
+            try {
+                // Enviar a imagem para o Firebase Storage
+                const storageRef = storage.ref();
+                const imagemRef = storageRef.child(`images/${id}`);
+                await imagemRef.put(imagem);
 
-                    // Obter a URL da imagem
-                    const imageUrl = await imagemRef.getDownloadURL();
+                // Obter a URL da imagem
+                const imageUrl = await imagemRef.getDownloadURL();
 
-                    // Adicionar a URL da imagem ao objeto reclamação
-                    reclamacao.imagemUrl = imageUrl;
+                // Adicionar a URL da imagem ao objeto reclamação
+                reclamacao.imagemUrl = imageUrl;
 
-                    // Enviar os dados para o Firebase Firestore
-                    await db.collection('Reclamacao').doc(id).set(reclamacao);
+                // Enviar os dados para o Firebase Firestore
+                await db.collection('Reclamacao').doc(id).set(reclamacao);
 
-                    alert('Reclamação enviada com sucesso!');
-                    formCriarReclamacao.reset();
-                    restaurarImagemPadrao(); // Limpar a imagem após o envio bem-sucedido
-                } catch (error) {
-                    console.error('Erro ao enviar reclamação: ', error);
-                    alert('Erro ao enviar reclamação. Verifique o console para mais detalhes.');
-                }
-            } else {
-                alert('Por favor, preencha todos os campos.');
+                alert('Reclamação enviada com sucesso!');
+                formCriarReclamacao.reset();
+                restaurarImagemPadrao(); // Limpar a imagem após o envio bem-sucedido
+            } catch (error) {
+                console.error('Erro ao enviar reclamação: ', error);
+                alert('Erro ao enviar reclamação. Verifique o console para mais detalhes.');
             }
-        });
-
-        function generateFileName() {
-            const now = new Date();
-            const formattedDate = `${now.getDate()}.${now.getMonth() + 1}.${now.getFullYear()}-${now.getHours()}.${now.getMinutes()}`;
-            return `REG.Nº${formattedDate}`;
+        } else {
+            alert('Por favor, preencha todos os campos.');
         }
+    });
 
-
-
-    </script>
-
+    function generateFileName() {
+        const now = new Date();
+        const formattedDate = `${now.getDate()}.${now.getMonth() + 1}.${now.getFullYear()}-${now.getHours()}.${now.getMinutes()}`;
+        return `REG.Nº${formattedDate}`;
+    }
+</script>
 
 </body>
 </html>
