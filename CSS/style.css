@@ -137,7 +137,10 @@ body {
 
 /* Estilizando para dispositivos móveis */
 @media only screen and (max-width: 768px) {
-  
+  .ring {
+    width: 80vw; /* Define a largura em 80% da largura da viewport */
+    height: 80vw; /* Define a altura igual à largura para manter a proporção do anel */
+  }
   .login {
     width: 100%;
   }
