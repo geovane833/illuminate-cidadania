@@ -138,17 +138,17 @@ body {
 /* Estilizando para dispositivos móveis */
 @media only screen and (max-width: 768px) {
   .ring {
-    width: 80vw; /* Define a largura em 80% da largura da viewport */
-    height: 80vw; /* Define a altura igual à largura para manter a proporção do anel */
+    width: 100vw; /* Define a largura igual à largura da viewport */
+    height: 100vw; /* Define a altura igual à largura para manter a proporção do anel */
   }
+
+  /* Ajuste a largura e altura dos elementos do anel */
   .ring i {
     border-width: 4px; /* Ajuste a largura da borda para torná-la mais espessa */
+    transform: scale(1.5); /* Aumenta o tamanho do anel em 1.5 vezes */
   }
-  .login {
-    width: 100%;
-  }
-  
 }
+
 
 /* Estilizando para desktops */
 @media only screen and (min-width: 769px) {
