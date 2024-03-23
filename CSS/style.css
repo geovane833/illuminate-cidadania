@@ -141,9 +141,13 @@ body {
     width: 80vw; /* Define a largura em 80% da largura da viewport */
     height: 80vw; /* Define a altura igual à largura para manter a proporção do anel */
   }
+  .ring i {
+    border-width: 4px; /* Ajuste a largura da borda para torná-la mais espessa */
+  }
   .login {
     width: 100%;
   }
+  
 }
 
 /* Estilizando para desktops */
