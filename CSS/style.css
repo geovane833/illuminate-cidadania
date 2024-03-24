@@ -138,8 +138,8 @@ body {
 /* Estilizando para dispositivos móveis */
 @media only screen and (max-width: 768px) {
   .ring {
-    width: 120vw; /* Define a largura em 80% da largura da viewport */
-    height: 120vw; /* Define a altura igual à largura para manter a proporção do anel */
+    width: 150vw; /* Define a largura em 80% da largura da viewport */
+    height: 150vw; /* Define a altura igual à largura para manter a proporção do anel */
   }
 
   /* Ajuste a largura e altura dos elementos do anel */
