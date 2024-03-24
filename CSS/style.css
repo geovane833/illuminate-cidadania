@@ -148,14 +148,15 @@ body {
     transform: scale(1.5); /* Aumenta o tamanho do anel em 1.5 vezes */
   }
 
-  .login {
-    width: 90%;
+  .login .inputBx input {
+    width: 80%; /* Defina a largura do input como 80% do contêiner pai */
+    padding: 20px; /* Aumenta o preenchimento interno do input */
+    font-size: 1.5em; /* Aumenta o tamanho da fonte do input */
+    border-radius: 30px; /* Aumenta o raio da borda para torná-la mais arredondada */
   }
 
-  .login .inputBx input {
-    padding: 30px 40px; /* Aumenta o preenchimento do input */
-    font-size: 1.4em; /* Aumenta o tamanho da fonte do input */
-    border-radius: 50px; /* Aumenta o raio da borda para torná-la mais arredondada */
+  .login {
+    width: 90%; /* Ajusta a largura do contêiner do formulário */
   }
 }
 
