@@ -151,6 +151,12 @@ body {
   .login {
     width: 90%;
   }
+
+  .login .inputBx input {
+    padding: 16px 24px; /* Aumenta o preenchimento do input */
+    font-size: 1.4em; /* Aumenta o tamanho da fonte do input */
+    border-radius: 50px; /* Aumenta o raio da borda para torná-la mais arredondada */
+  }
 }
 
 
