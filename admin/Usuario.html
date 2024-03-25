@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil do Usuário - Illuminate Cidadania</title>
+    
+    <link rel="stylesheet" type="text/css" href="../CSS/style_admin.css">
+    <style>
+        /* Estilo para a caixa do formulário */
+        form {
+            max-width: 400px; /* Reduzindo a largura do formulário */
+            margin: 20px auto; /* Centralizar a caixa */
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center; /* Centralizar o título */
+            color: black;
+        }
+
+        /* Estilo para os campos de texto */
+        #campos-texto {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Alinhar os itens à esquerda */
+            width: 100%; /* Utilizar toda a largura disponível */
+        }
+
+        #campos-texto label {
+            margin-bottom: 5px;
+            align-self: flex-start; /* Alinhar os labels à esquerda */
+        }
+
+        /* Estilo para o botão de logout */
+        .botao-deslogar {
+            display: flex;
+            justify-content: center; /* Centralizar horizontalmente */
+        }
+
+        .botao-deslogar button {
+            width: 200px; /* Largura do botão */
+            padding: 10px;
+            border: none;
+            background-color: #009540; /* Cor do botão */
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        /* Estilo para o botão de logout ao passar o mouse */
+        .botao-deslogar button:hover {
+            background-color: #8E0306; /* Altera a cor de fundo ao passar o mouse */
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="nav-container">
+      <div class="nav-logo">
+        <img src="../imagens/IFCE.png" alt="Logo IFCE">
+        <span class="nav-name"><strong>Illuminate Cidadania</strong></span>
+      </div>
+      <div class="buttons">
+        <button class="menu_botoes" onclick="window.location.href = 'inicio.html';">
+            <i class="fa-light fa-fire"></i>
+            <span>Inicio</span>
+        </button>
+        <button class="menu_botoes" onclick="window.location.href = 'Cadastrar_reclamacao.html';">
+            <i class="fa-light fa-dna"></i>
+            <span>Criar Reclamação</span>
+        </button>
+        <button class="menu_botoes" onclick="window.location.href = 'Reclamacoes.html';">
+          <i class="fa-light fa-chart-mixed"></i>
+          <span>Reclamações</span>
+        </button>
+        <button class="menu_botoes" onclick="window.location.href = 'Problemas_resolvidos.html';">
+          <i class="fa-light fa-atom"></i>
+          <span>Resolvidos</span>
+        </button>
+        <button class="menu_botoes" onclick="window.location.href = 'Sobre.html';">
+          <i class="fa-light fa-seedling"></i>
+          <span>Sobre</span>
+        </button>
+        <button class="menu_botoes active" onclick="logout()">Sair</button>
+        <button class="menu_botoes" onclick="window.location.href = 'Usuario.html';" style="display:none;">Entrar</button>
+      </div>
+    </nav>
+
+    <form>
+        <h1>Perfil do Usuário</h1>
+        <div id="campos-texto">
+            <label for="nome">Nome:</label>
+            <label id="nome">Nome do Usuário</label><br>
+            
+            <label for="email">Email:</label>
+            <label id="email">usuario@example.com</label><br>
+        </div>
+        <div class="botao-deslogar">
+            <button type="submit" onclick="logout()">Sair</button>
+        </div>
+    </form>
+
+    <footer>
+        <p>&copy; 2024 Illuminate Cidadania. Todos os direitos reservados.</p>
+    </footer>
+
+    <!-- Firebase JavaScript SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-firestore.js"></script>
+    <!-- Seu arquivo de configuração do Firebase -->
+    <script src="../firebase/firebase-config.js"></script>
+
+    <script>
+      //permanesse conectado 
+  firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+  .then(() => {
+    // Autenticação persistente configurada com sucesso
+  })
+  .catch((error) => {
+    // Tratamento de erros
+    console.error("Erro ao configurar persistência de autenticação:", error);
+  });
+
+
+      // Função para logout
+        function logout() {
+            firebase.auth().signOut().then(() => {
+                // Logout bem-sucedido
+                alert("Usuário deslogado com sucesso!");
+                window.location.href = "../login/login.html"; // Redirecionar para a página de login após o logout
+            }).catch((error) => {
+                // Erro durante o logout
+                console.error("Erro ao fazer logout:", error);
+            });
+        }
+
+        // Verificar se o usuário está autenticado
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                // Usuário está autenticado, exibir informações do perfil
+                const userEmail = user.email;
+                document.getElementById("email").textContent = userEmail;
+                // Buscar o nome do usuário no Firestore
+                const usuarioID = user.uid;
+                const db = firebase.firestore();
+                const userRef = db.collection("Usuarios").doc(usuarioID);
+                userRef.get().then((doc) => {
+                    if (doc.exists) {
+                        const nomeUsuario = doc.data().Nome;
+                        document.getElementById("nome").textContent = nomeUsuario;
+                    } else {
+                        console.log("Documento não encontrado!");
+                    }
+                }).catch((error) => {
+                    console.error("Erro ao obter documento:", error);
+                });
+            } else {
+                // Usuário não está autenticado, redirecionar para a página de login
+                window.location.href = "../login/index.html";
+            }
+        });
+    </script>
+</body>
+</html>

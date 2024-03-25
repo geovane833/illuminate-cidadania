@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - Illuminate Cidadania</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<!--ring div starts here-->
+<div class="ring">
+  <i style="--clr:#00ff0a;"></i>
+  <i style="--clr:#ff0057;"></i>
+  <i style="--clr:#fffd44;"></i>
+  <div class="login">
+    <h2>Login</h2>
+    <div class="inputBx">
+      <input type="email" id="email" placeholder="Email">
+    </div>
+    <div class="inputBx">
+      <input type="password" id="password" placeholder="Senha">
+    </div>
+    <div class="inputBx">
+      <input type="submit" id="loginButton" value="Entrar">
+    </div>
+
+    <div class="links">
+      <a href="#">Esqueceu a senha?</a>
+      <a href="Cadastrese.html">Cadastra-se</a>
+    </div>
+  </div>
+</div>
+
+<!-- Firebase JavaScript SDK -->
+<script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js"></script>
+
+<!-- Seu arquivo de configuração do Firebase -->
+<script src="../firebase/firebase-config.js"></script>
+
+<script>
+  // Adicionar evento de click ao botão de login
+  document.getElementById("loginButton").addEventListener("click", () => {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    // Autenticar usuário usando email/senha
+    firebase.auth().signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        // Verificar se o email é admin
+        if (email === "admin@gmail.com") {
+          // Se for admin, redirecionar para a página do admin
+          window.location.href = "../admin/Inicio.html";
+        } else {
+          // Senão, redirecionar para a página principal
+          window.location.href = "../User/inicio.html";
+        }
+      })
+      .catch((error) => {
+        // Exibir erro de autenticação
+        alert("Erro ao fazer login: " + error.message);
+      });
+  });
+
+</script>
+
+</body>
+</html>

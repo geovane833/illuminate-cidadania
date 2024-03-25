@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - Illuminate Cidadania</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<!--ring div starts here-->
+<div class="ring mobile">
+  <i style="--clr:#00ff0a;"></i>
+  <i style="--clr:#ff0057;"></i>
+  <i style="--clr:#fffd44;"></i>
+  <div class="login">
+    <h2>Illuminate Cidadania</h2>
+
+    <div class="inputBx">
+      <input type="submit" id="loginButton" value="Entrar">
+      <input type="submit" value="Cadastra-se" id="registerButton">
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById("loginButton").addEventListener("click", function() {
+  window.location.href = "login.html";
+});
+
+document.getElementById("registerButton").addEventListener("click", function() {
+  window.location.href = "cadastrese.html";
+});
+</script>
+
+</body>
+</html>
