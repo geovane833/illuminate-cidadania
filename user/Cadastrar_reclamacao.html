@@ -113,6 +113,17 @@
 <!-- Seu arquivo de configuração do Firebase -->
 <script src="../firebase/firebase-config.js"></script>
 <script>
+    // Verificar se o usuário está autenticado
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            // Usuário está autenticado, permitir o acesso à página
+            // Aqui você pode colocar o código que você quer que seja executado quando o usuário está autenticado
+            obterReclamacoesResolvidasDoUsuario(user.email);
+        } else {
+            // Usuário não está autenticado, redirecionar para a página de login
+            window.location.href = '../login/index.html'; // Substitua 'login.html' pelo caminho da sua página de login
+        }
+    });
     $('#whatsapp').mask('(00) 0 0000-0000');
 
     const db = firebase.firestore();
