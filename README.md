@@ -22,4 +22,4 @@ O Illuminate Cidadania é um projeto web destinado aos moradores de Jaguaruana, 
 1. Clone este repositório:
 
 ```bash
-git clone https://github.com/seu-usuario/illuminate-cidadania.git
+git clone https://github.com/geovane833/illuminate-cidadania.git
