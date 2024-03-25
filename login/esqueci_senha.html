@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Redefinir Senha - Illuminate Cidadania</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="../imagens/IFCE.ico" type="image/x-icon">
+  <style>
+    .inputBx {
+      margin-bottom: 20px;
+    }
+
+    .inputBx input {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      outline: none;
+      border-bottom: 2px solid #333;
+      background: transparent;
+      transition: .5s;
+    }
+
+    .inputBx input:focus {
+      border-color: #fb7207;
+    }
+
+    .inputBx input::placeholder {
+      color: #888;
+    }
+
+    .inputBx input[type="submit"] {
+      background: #fb7207;
+      color: #fff;
+      cursor: pointer;
+      transition: .3s;
+    }
+
+    .inputBx input[type="submit"]:hover {
+      background: #ff9a3c;
+    }
+
+    .links {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .links a {
+      color: #333;
+      text-decoration: none;
+      margin: 0 10px;
+      transition: .3s;
+    }
+
+    .links a:hover {
+      color: #fb7207;
+    }
+    /* Estilos CSS... */
+    .message-box {
+      margin-top: 20px;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+   /* Estilos CSS para o aviso flutuante */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5); /* fundo semi-transparente */
+      display: none; /* esconder por padrão */
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal {
+      background-color: rgb(115, 225, 159); /* cor personalizada */
+      color: black; /* cor do texto */
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      text-align: center; /* Centralizar o conteúdo */
+    }
+
+    .modal p {
+      font-weight: bold; /* Texto em negrito */
+      color: white; /* Cor do texto */
+    }
+
+    .close-btn {
+      background-color: #fb7207;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-top: 20px; /* Espaçamento superior */
+    }
+  </style>
+</head>
+<body>
+
+<div class="ring">
+  <i style="--clr:#00ff0a;"></i>
+  <i style="--clr:#ff0057;"></i>
+  <i style="--clr:#fffd44;"></i>
+<div class="login">
+  <h2>Redefinir Senha</h2>
+  <form id="resetPasswordForm">
+    <div class="inputBx">
+      <input type="email" id="email" placeholder="E-mail">
+    </div>
+    <div class="inputBx">
+      <input type="submit" value="Enviar Link de Redefinição de Senha">
+    </div>
+    <div id="resetPasswordResult" class="message-box"></div>
+    <div class="links">
+      <a href="login.html">Cancelar</a>
+      <a href="Cadastrese.html">Cadastrar-se</a>
+    </div>
+  </form>
+</div>
+
+<!-- Avviso flutuante -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <p id="message"></p>
+    <button class="close-btn" onclick="closeModal()">OK</button>
+  </div>
+</div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js"></script>
+<script src="../firebase/firebase-config.js"></script>
+
+<script>
+  const resetPasswordForm = document.getElementById('resetPasswordForm');
+  const overlay = document.getElementById('overlay');
+  const messageElement = document.getElementById('message');
+
+  resetPasswordForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+    
+    const email = resetPasswordForm['email'].value;
+    
+    firebase.auth().sendPasswordResetEmail(email)
+      .then(() => {
+        showMessage('Um link de redefinição de senha foi enviado para o seu e-mail.');
+        resetPasswordForm.reset();
+      })
+      .catch((error) => {
+        showMessage(`Erro ao enviar link de redefinição de senha: ${error.message}`);
+      });
+  });
+
+  function showMessage(message) {
+    messageElement.textContent = message;
+    overlay.style.display = 'flex';
+  }
+
+  function closeModal() {
+    overlay.style.display = 'none';
+  }
+</script>
+
+</body>
+</html>
