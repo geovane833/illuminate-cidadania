@@ -7,6 +7,7 @@
   <link rel="icon" href="../imagens/IFCE.ico" type="image/x-icon">
 </head>
 <body>
+<!--ring div starts here-->
 <div class="ring">
   <i style="--clr:#00ff0a;"></i>
   <i style="--clr:#ff0057;"></i>
@@ -59,14 +60,26 @@
       if (user.email === "admin@gmail.com") {
         // Se for admin, armazene essa informação
         localStorage.setItem('isAdmin', true);
-        // Redirecione para a página do admin
-        window.location.href = "../admin/Inicio.html";
       } else {
-        // Senão, redirecione para a página principal do usuário
-        window.location.href = "../User/inicio.html";
+        // Senão, remova a informação de admin (caso exista)
+        localStorage.removeItem('isAdmin');
       }
+      // Redirecionar para a página apropriada
+      redirectToAppropriatePage();
     }
   });
+
+  // Função para redirecionar para a página apropriada
+  function redirectToAppropriatePage() {
+    const isAdmin = localStorage.getItem('isAdmin');
+    if (isAdmin === 'true') {
+      // Redirecionar para a página de início do admin
+      window.location.href = "../admin/Inicio.html";
+    } else {
+      // Senão, redirecionar para a página principal do usuário
+      window.location.href = "../User/inicio.html";
+    }
+  }
 
 </script>
 
