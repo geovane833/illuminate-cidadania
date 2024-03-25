@@ -16,6 +16,20 @@
             text-align: center;
             margin-top: 20px;
         }
+        /* Estilo para a imagem de "resolvido.png" */
+.resolvido-item {
+  position: relative;
+}
+
+.resolvido-item::after {
+  content: url('../imagens/resolvido.png'); /* Utiliza o conteúdo da pseudo-classe ::after */
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 20px; /* Largura máxima da imagem */
+  max-height: 20px; /* Altura máxima da imagem */
+}
     </style>
 </head>
 <body>
@@ -86,84 +100,118 @@
 <script src="../firebase/firebase-config.js"></script>
 
 <script>
-  
-   const db = firebase.firestore();
+    const db = firebase.firestore();
 
-   // Verificar se o usuário está autenticado e é admin
-   firebase.auth().onAuthStateChanged(function(user) {
-       if (user && user.email === 'admin@gmail.com') {
-           // Usuário está autenticado e é admin, permitir o acesso à página
-           obterTodasReclamacoesResolvidas();
-       } else {
-         // E-mail do usuário não corresponde ao e-mail de administração
+    // Verificar se o usuário está autenticado e é admin
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user && user.email === 'admin@gmail.com') {
+            // Usuário está autenticado e é admin, permitir o acesso à página
+            obterTodasReclamacoesResolvidas();
+        } else {
+            // E-mail do usuário não corresponde ao e-mail de administração
             alert('Você não tem permissão para acessar esta página como administrador.');
-           // Usuário não está autenticado ou não é admin, redirecionar para a página de login
-           window.location.href = '../login/index.html'; // Substitua pelo caminho correto da página de login
-       }
-   });
+            // Usuário não está autenticado ou não é admin, redirecionar para a página de login
+            window.location.href = '../login/index.html'; // Substitua pelo caminho correto da página de login
+        }
+    });
 
-   // Função para obter todas as reclamações resolvidas
-   function obterTodasReclamacoesResolvidas() {
-       db.collection("Problemas_resolvidos")
-           .get()
-           .then((querySnapshot) => {
-               const listaDados = document.getElementById("lista-dados");
-               const totalReclamacoes = querySnapshot.size;
-               document.getElementById("totalReclamacoesSpan").textContent = totalReclamacoes;
+    // Função para obter todas as reclamações resolvidas
+    function obterTodasReclamacoesResolvidas() {
+        db.collection("Problemas_resolvidos")
+            .get()
+            .then((querySnapshot) => {
+                const listaDados = document.getElementById("lista-dados");
+                const totalReclamacoes = querySnapshot.size;
+                document.getElementById("totalReclamacoesSpan").textContent = totalReclamacoes;
 
-               querySnapshot.forEach((doc) => {
-                   const dados = doc.data();
-                   const listItem = document.createElement("li");
-                   listItem.className = "dados-item";
-                   listItem.dataset.docId = doc.id; // Define o ID do documento como um atributo de dados
+                querySnapshot.forEach((doc) => {
+                    const dados = doc.data();
+                    const listItem = document.createElement("li");
+                    listItem.className = "dados-item resolvido-item"; // Adiciona a classe "resolvido-item"
+                    listItem.dataset.docId = doc.id; // Define o ID do documento como um atributo de dados
 
-                   // Adicione a imagem
-                   const imageContainer = document.createElement("div");
-                   imageContainer.innerHTML = `<img src="${dados.imagemUrl}" alt="Imagem">`;
-                   listItem.appendChild(imageContainer);
+                    // Adicione a imagem
+                    const imageContainer = document.createElement("div");
+                    imageContainer.innerHTML = `<img src="${dados.imagemUrl}" alt="Imagem">`;
+                    listItem.appendChild(imageContainer);
 
-                   // Adicione as informações do documento
-                   const infoContainer = document.createElement("div");
-                   infoContainer.className = "dados-info";
-                   infoContainer.innerHTML = `
-                       <p>Reclamação: <strong>${dados.id}</strong></p>
-                       <p>Bairro: <strong>${dados.bairro}</strong></p>
-                       <p>Cidade: <strong>${dados.cidade}</strong></p>
-                       <p>Nome da Rua: <strong>${dados.nomeRua}</strong></p>
-                       <p>Ponto de Referência: <strong>${dados.pontoReferencia}</strong></p>
-                       <p>Nome do Reclamante: <strong>${dados.nomeReclamante}</strong></p>
-                       <p>WhatsApp: <strong>${dados.whatsapp}</strong></p>
-                   `;
-                   listItem.appendChild(infoContainer);
+                    // Adicione as informações do documento
+                    const infoContainer = document.createElement("div");
+                    infoContainer.className = "dados-info";
+                    infoContainer.innerHTML = `
+                        <p>Reclamação: <strong>${dados.id}</strong></p>
+                        <p>Bairro: <strong>${dados.bairro}</strong></p>
+                        <p>Cidade: <strong>${dados.cidade}</strong></p>
+                        <p>Nome da Rua: <strong>${dados.nomeRua}</strong></p>
+                        <p>Ponto de Referência: <strong>${dados.pontoReferencia}</strong></p>
+                        <p>Nome do Reclamante: <strong>${dados.nomeReclamante}</strong></p>
+                        <p>WhatsApp: <strong>${dados.whatsapp}</strong></p>
+                    `;
+                    listItem.appendChild(infoContainer);
 
-                   // Adicione o evento de clique para mostrar a caixa de diálogo
-                   listItem.addEventListener("click", () => {
-                       // Remover a classe 'selected' de todos os itens
-                       const allItems = document.querySelectorAll(".dados-item");
-                       allItems.forEach(item => {
-                           item.classList.remove("selected");
-                       });
-                       // Adicionar a classe 'selected' ao item clicado
-                       listItem.classList.add("selected");
-                       showDialog(dados);
-                   });
+                    // Adicione o evento de clique para mostrar a caixa de diálogo
+                    listItem.addEventListener("click", () => {
+                        // Remover a classe 'selected' de todos os itens
+                        const allItems = document.querySelectorAll(".dados-item");
+                        allItems.forEach(item => {
+                            item.classList.remove("selected");
+                        });
+                        // Adicionar a classe 'selected' ao item clicado
+                        listItem.classList.add("selected");
+                        showDialog(dados);
+                    });
 
-                   // Adicione o item à lista
-                   listaDados.appendChild(listItem);
-               });
-           })
-           .catch((error) => {
-               console.error("Erro ao obter documentos: ", error);
-           });
-   }
+                    // Adicione o item à lista
+                    listaDados.appendChild(listItem);
+                });
+            })
+            .catch((error) => {
+                console.error("Erro ao obter documentos: ", error);
+            });
+    }
 
+    // Função para mostrar a caixa de diálogo quando um item da lista é clicado
+    function showDialog(dados) {
+        const dialogOverlay = document.getElementById("dialogOverlay");
+        dialogOverlay.style.display = "flex";
 
-// Adicione evento de clique ao botão "Resolvido"
-    document.getElementById("resolvidoButton").addEventListener("click", () => {
-        // Aqui você pode adicionar a lógica para marcar o item como resolvido no banco de dados
-        const docId = document.querySelector(".dados-item.selected").dataset.docId; // Obtém o ID do documento
-        moverDocumentoParaProblemasResolvidos(docId);
-        hideDialog();
+        // Exibir imagem com tamanho máximo de 200x300
+        const dialogImage = document.getElementById("dialogImage");
+        dialogImage.innerHTML = `<img src="${dados.imagemUrl}" alt="Imagem">`;
+
+        // Exibir informações
+        const dialogInfo = document.getElementById("dialogInfo");
+        dialogInfo.innerHTML = `
+            <p>Reclamação: <strong>${dados.id}</strong></p>
+            <p>Bairro: <strong>${dados.bairro}</strong></p>
+            <p>Cidade: <strong>${dados.cidade}</strong></p>
+            <p>Nome da Rua: <strong>${dados.nomeRua}</strong></p>
+            <p>Ponto de Referência: <strong>${dados.pontoReferencia}</strong></p>
+            <p>Nome do Reclamante: <strong>${dados.nomeReclamante}</strong></p>
+            <p>WhatsApp: <strong>${dados.whatsapp}</strong></p>
+        `;
+    }
+
+    // Função para esconder a caixa de diálogo
+    function hideDialog() {
+        const dialogOverlay = document.getElementById("dialogOverlay");
+        dialogOverlay.style.display = "none";
+    }
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Adicione evento de clique ao botão "Resolvido"
+        document.getElementById("resolvidoButton").addEventListener("click", () => {
+            // Verifica se algum item da lista está selecionado
+            const selectedItem = document.querySelector(".dados-item.selected");
+            if (selectedItem) {
+                const docId = selectedItem.dataset.docId; // Obtém o ID do documento
+                moverDocumentoParaProblemasResolvidos(docId);
+            } else {
+                alert("Selecione uma reclamação para mover.");
+            }
+        });
     });
 
     // Função para mover o documento para a coleção "Problemas_resolvidos" e excluí-lo da coleção original
@@ -178,6 +226,7 @@
                             .then(() => {
                                 alert("Reclamação movida de volta para Reclamações.");
                                 location.reload(); // Recarregar a página após a ação
+                                hideDialog(); // Fechar a caixa de diálogo
                             })
                             .catch((error) => {
                                 alert("Erro ao excluir reclamação original: " + error.message);
@@ -194,40 +243,30 @@
         });
     }
 
-
-   // Função para mostrar a caixa de diálogo quando um item da lista é clicado
-   function showDialog(dados) {
-       const dialogOverlay = document.getElementById("dialogOverlay");
-       dialogOverlay.style.display = "flex";
-
-       // Exibir imagem com tamanho máximo de 200x300
-       const dialogImage = document.getElementById("dialogImage");
-       dialogImage.innerHTML = `<img src="${dados.imagemUrl}" alt="Imagem">`;
-
-       // Exibir informações
-       const dialogInfo = document.getElementById("dialogInfo");
-       dialogInfo.innerHTML = `
-           <p>Reclamação: <strong>${dados.id}</strong></p>
-           <p>Bairro: <strong>${dados.bairro}</strong></p>
-           <p>Cidade: <strong>${dados.cidade}</strong></p>
-           <p>Nome da Rua: <strong>${dados.nomeRua}</strong></p>
-           <p>Ponto de Referência: <strong>${dados.pontoReferencia}</strong></p>
-           <p>Nome do Reclamante: <strong>${dados.nomeReclamante}</strong></p>
-           <p>WhatsApp: <strong>${dados.whatsapp}</strong></p>
-       `;
-   }
-
-   // Função para esconder a caixa de diálogo
-   function hideDialog() {
-       const dialogOverlay = document.getElementById("dialogOverlay");
-       dialogOverlay.style.display = "none";
-   }
-    // Adicione evento de clique ao botão "Voltar"
-    document.getElementById("voltarButton").addEventListener("click", () => {
-        // Aqui você pode adicionar a lógica para cancelar a operação ou realizar outras ações necessárias
-        hideDialog();
-    });
+    // Função para esconder a caixa de diálogo
+    function hideDialog() {
+        const dialogOverlay = document.getElementById("dialogOverlay");
+        dialogOverlay.style.display = "none";
+    }
 </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Adicione evento de clique ao botão "Voltar"
+        document.getElementById("voltarButton").addEventListener("click", () => {
+            hideDialog();
+        });
+    });
+
+    // Função para esconder a caixa de diálogo
+    function hideDialog() {
+        const dialogOverlay = document.getElementById("dialogOverlay");
+        dialogOverlay.style.display = "none";
+    }
+</script>
+
+
+
 
 </body>
 </html>
