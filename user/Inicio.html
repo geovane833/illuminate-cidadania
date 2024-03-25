@@ -12,31 +12,35 @@
 }
 
 .resolvido-item::after {
-  content: url('../imagens/resolvido.png'); /* Utiliza o conteúdo da pseudo-classe ::after */
+  content: url('../imagens/resolvido.png');
   position: absolute;
   top: 20%;
   left: 50%;
   transform: translate(-50%, -50%);
-  max-width: 20px; /* Largura máxima da imagem */
-  max-height: 20px; /* Altura máxima da imagem */
+  max-width: 20px;
+  max-height: 20px;
 }
 
 @media only screen and (min-width: 768px) {
   #lista-dados-registradas,
   #lista-dados-resolvidas {
+    list-style-type: none;
+    padding: 0;
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start; /* Alinhamento à esquerda */
+    justify-content: flex-start;
+    margin: 0;
+    padding-left: 10px;
+    margin-top: 20px;
   }
 
   #lista-dados-registradas .dados-item,
   #lista-dados-resolvidas .dados-item {
-    width: calc(33% - 20px); /* 33,33% da largura do contêiner pai com margem entre os itens */
+    width: calc(33.33% - 20px);
     margin-right: 10px;
     margin-bottom: 20px;
   }
 
-  /* Limpa a margem direita do último item em cada linha */
   #lista-dados-registradas .dados-item:nth-child(3n),
   #lista-dados-resolvidas .dados-item:nth-child(3n) {
     margin-right: 0;
@@ -46,13 +50,20 @@
 @media only screen and (max-width: 767px) {
   #lista-dados-registradas,
   #lista-dados-resolvidas {
+   list-style-type: none;
+    padding: 0;
     display: flex;
-    flex-direction: column; /* Exibe os itens em coluna */
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin: 0;
+    padding-left: 20px;
+    margin-top: 20px;
   }
 
   #lista-dados-registradas .dados-item,
   #lista-dados-resolvidas .dados-item {
-    width: 100%; /* Define a largura para ocupar toda a largura do contêiner */
+    width: calc(100% - 20px);
+    max-width: 600px;
     margin-bottom: 20px;
   }
 }
@@ -112,6 +123,7 @@
   </div>
 
   <div class="text-illuminate">
+  </br>
     <h2>Sobre o Illuminate Cidadania</h2>
     <p>O Illuminate Cidadania é um site destinado aos moradores de Jaguaruana, onde podem registrar reclamações sobre problemas de iluminação pública, como luz dos postes apagadas. Nosso objetivo é proporcionar uma ferramenta eficaz para que a comunidade possa comunicar e resolver essas questões de forma rápida e eficiente.</p>
   </div>
