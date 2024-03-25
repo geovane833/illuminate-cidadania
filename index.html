@@ -7,9 +7,26 @@
     <title>Redirecionamento</title>
 </head>
 <body>
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js"></script>
+    <script src="firebase/firebase-config.js"></script>
+
     <script>
-        // Redirecionar para a tela de início
-        window.location.href = "./user/Inicio.html";
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                const isAdmin = localStorage.getItem('isAdmin');
+                if (isAdmin === 'true') {
+                    // Redirecionar para a tela de início do admin
+                    window.location.href = "./admin/Inicio.html";
+                } else {
+                    // Redirecionar para a tela de início do usuário
+                    window.location.href = "./user/Inicio.html";
+                }
+            } else {
+                // Se o usuário não estiver autenticado, redirecionar para a tela de login
+                window.location.href = "./login.html";
+            }
+        });
     </script>
 </body>
 </html>
