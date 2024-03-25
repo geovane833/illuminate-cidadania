@@ -139,6 +139,15 @@ h2{
 </footer>
 
 <script>
+   //permanesse conectado 
+  firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+  .then(() => {
+    // Autenticação persistente configurada com sucesso
+  })
+  .catch((error) => {
+    // Tratamento de erros
+    console.error("Erro ao configurar persistência de autenticação:", error);
+  });
   let currentSlide = 0;
   const slides = document.querySelectorAll('.slide-image');
 

@@ -125,6 +125,15 @@
 
     const db = firebase.firestore();
     const storage = firebase.storage();
+     //permanesse conectado 
+  firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+  .then(() => {
+    // Autenticação persistente configurada com sucesso
+  })
+  .catch((error) => {
+    // Tratamento de erros
+    console.error("Erro ao configurar persistência de autenticação:", error);
+  });
 
     // Função para preencher o select com os bairros do Firestore
     async function preencherSelectBairros() {

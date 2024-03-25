@@ -102,6 +102,15 @@
 
 <script>
     const db = firebase.firestore();
+     //permanesse conectado 
+  firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+  .then(() => {
+    // Autenticação persistente configurada com sucesso
+  })
+  .catch((error) => {
+    // Tratamento de erros
+    console.error("Erro ao configurar persistência de autenticação:", error);
+  });
 
     // Verificar se o usuário está autenticado e é admin
     firebase.auth().onAuthStateChanged(function(user) {
